@@ -1,0 +1,1 @@
+apply(rootProject.file("gradle/publish.gradle.kts"))
