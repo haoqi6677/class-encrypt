@@ -217,32 +217,42 @@ public class ClassFile {
     public Attributes attributes;
     private Rsa rsa;
 
-    public void methodEncrypt() throws ConstantPoolException {
+    public void methodEncrypt() throws Exception {
         if (rsa == null) {
             throw new RuntimeException("rsa is null");
         }
         for (Method method : methods) {
             Attributes attributes = method.getAttributes();
             for (Attribute attribute : attributes) {
-                Code_attribute codeAttribute = (Code_attribute) attribute;
-                byte[] code = codeAttribute.getCode();
-                byte[] encryptedData = rsa.encryptData(code);
-                codeAttribute.setCode(encryptedData);
+                if (attribute instanceof Code_attribute) {
+                    Code_attribute codeAttribute = (Code_attribute) attribute;
+                    byte[] code = codeAttribute.getCode();
+                    byte[] encryptedData = rsa.encryptData(code);
+                    if (encryptedData == null) {
+                        continue;
+                    }
+                    codeAttribute.setCode(encryptedData);
+                }
             }
         }
     }
 
-    public void methodDecrypt() throws ConstantPoolException {
+    public void methodDecrypt() throws Exception {
         if (rsa == null) {
             throw new RuntimeException("rsa is null");
         }
         for (Method method : methods) {
             Attributes attributes = method.getAttributes();
             for (Attribute attribute : attributes) {
-                Code_attribute codeAttribute = (Code_attribute) attribute;
-                byte[] code = codeAttribute.getCode();
-                byte[] encryptedData = rsa.decryptData(code);
-                codeAttribute.setCode(encryptedData);
+                if (attribute instanceof Code_attribute) {
+                    Code_attribute codeAttribute = (Code_attribute) attribute;
+                    byte[] code = codeAttribute.getCode();
+                    byte[] decryptData = rsa.decryptData(code);
+                    if (decryptData == null) {
+                        continue;
+                    }
+                    codeAttribute.setCode(decryptData);
+                }
             }
         }
     }

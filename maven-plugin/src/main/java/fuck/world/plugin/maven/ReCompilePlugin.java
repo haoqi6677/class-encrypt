@@ -1,7 +1,7 @@
 package fuck.world.plugin.maven;
 
 import fuck.world.custom.ReCompileFile;
-import fuck.world.rsa.Rsa;
+import fuck.world.rsa.RsaDefaultImpl;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -24,7 +24,7 @@ public class ReCompilePlugin extends AbstractMojo {
     public void execute() throws MojoExecutionException {
         getLog().info("Recompiling classes in: " + outputDirectory);
         try {
-            ReCompileFile reCompileFile = new ReCompileFile(new ArrayList<>(), new Rsa(pubKey, priKey));
+            ReCompileFile reCompileFile = new ReCompileFile(new ArrayList<>(), new RsaDefaultImpl(pubKey, priKey));
 
             if (outputDirectory == null) {
                 getLog().info("class file empty");

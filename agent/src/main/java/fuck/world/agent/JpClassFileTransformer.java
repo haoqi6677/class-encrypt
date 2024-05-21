@@ -2,10 +2,8 @@ package fuck.world.agent;
 
 import fuck.world.classfile.ClassFile;
 import fuck.world.classfile.ClassWriter;
-import fuck.world.classfile.ConstantPoolException;
 import fuck.world.rsa.Rsa;
 
-import java.io.IOException;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
@@ -38,7 +36,7 @@ public class JpClassFileTransformer implements ClassFileTransformer {
             try (ClassWriter classWriter = new ClassWriter()) {
                 return classWriter.writeToByte(classFile);
             }
-        } catch (IOException | ConstantPoolException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

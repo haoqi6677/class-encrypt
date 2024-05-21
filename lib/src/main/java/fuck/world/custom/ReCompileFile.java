@@ -2,11 +2,9 @@ package fuck.world.custom;
 
 import fuck.world.classfile.ClassFile;
 import fuck.world.classfile.ClassWriter;
-import fuck.world.classfile.ConstantPoolException;
 import fuck.world.rsa.Rsa;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
@@ -52,7 +50,7 @@ public class ReCompileFile {
         }
     }
 
-    public void encrypt() throws ConstantPoolException, IOException {
+    public void encrypt() throws Exception {
         for (File it : originClassFiles) {
             ClassFile classFile = ClassFile.read(it);
             classFile.setRsa(rsa);
@@ -64,7 +62,7 @@ public class ReCompileFile {
         }
     }
 
-    public void decrypt() throws ConstantPoolException, IOException {
+    public void decrypt() throws Exception {
         for (File it : originClassFiles) {
             ClassFile classFile = ClassFile.read(it);
             classFile.setRsa(rsa);

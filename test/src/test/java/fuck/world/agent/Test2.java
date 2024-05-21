@@ -2,21 +2,16 @@ package fuck.world.agent;
 
 import fuck.world.classfile.*;
 import fuck.world.rsa.Rsa;
+import fuck.world.rsa.RsaDefaultImpl;
 import org.junit.jupiter.api.BeforeAll;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.spec.InvalidKeySpecException;
 import java.util.Objects;
 
 public class Test2 {
     static String path;
     static Rsa rsaExample;
-    static PrivateKey privateKey;
-    static PublicKey publicKey;
 
     @BeforeAll
     public static void before() {
@@ -24,9 +19,7 @@ public class Test2 {
         path = Objects.requireNonNull(resource).getPath();
 
         try {
-            rsaExample = new Rsa("./pub", "./pri");
-            privateKey = rsaExample.getPrivateKey();
-            publicKey = rsaExample.getPublicKey();
+            rsaExample = new RsaDefaultImpl("d://pub", "d://pri");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -96,7 +89,7 @@ public class Test2 {
         Files.write(newFile.toPath(), classFile.toByteArray());
     }*/
     @org.junit.jupiter.api.Test
-    public void test2() throws ConstantPoolException, IOException, InvalidKeySpecException {
+    public void test2() throws Exception {
         File file = new File(path + "fuck/world/Dog.class");
         ClassFile classFile = ClassFile.read(file);
 //        String name = classFile.getName();
@@ -113,10 +106,12 @@ public class Test2 {
 //            method.setAccess_flags(new AccessFlags((short) (AccessFlag.PRIVATE.mask())));
             Attributes attributes = method.getAttributes();
             for (Attribute attribute : attributes) {
-                Code_attribute codeAttribute = (Code_attribute) attribute;
-                byte[] code = codeAttribute.getCode();
-                byte[] encryptedData = rsaExample.encryptData(code, publicKey);
-                codeAttribute.setCode(encryptedData);
+                if (attribute instanceof Code_attribute) {
+                    Code_attribute codeAttribute = (Code_attribute) attribute;
+                    byte[] code = codeAttribute.getCode();
+                    byte[] encryptedData = rsaExample.encryptData(code);
+                    codeAttribute.setCode(encryptedData);
+                }
             }
         }
 
@@ -127,29 +122,31 @@ public class Test2 {
     }
 
     @org.junit.jupiter.api.Test
-    public void test3() throws ConstantPoolException, IOException, InvalidKeySpecException {
-        File file = new File(path + "fuck/world/DumbDog1.class");
+    public void test3() throws Exception {
+        File file = new File(path + "fuck/world/redefine/Dog.class");
         ClassFile classFile = ClassFile.read(file);
 //        String name = classFile.getName();
 //        System.out.println(name);
         ConstantPool constantPool = classFile.constant_pool;
         ConstantPool.CONSTANT_Class_info cpInfo = (ConstantPool.CONSTANT_Class_info) constantPool.get(classFile.this_class);
         ConstantPool.CONSTANT_Utf8_info constantUtf8Info = (ConstantPool.CONSTANT_Utf8_info) constantPool.get(cpInfo.name_index);
-        constantUtf8Info.setValue("fuck/world/DumbDog2");
+        constantUtf8Info.setValue("fuck/world/redefine/Dog1");
 
         Method[] methods = classFile.methods;
         for (Method method : methods) {
 //            method.setAccess_flags(new AccessFlags((short) (AccessFlag.PRIVATE.mask())));
             Attributes attributes = method.getAttributes();
             for (Attribute attribute : attributes) {
-                Code_attribute codeAttribute = (Code_attribute) attribute;
-                byte[] code = codeAttribute.getCode();
-                byte[] encryptedData = rsaExample.decryptData(code, privateKey);
-                codeAttribute.setCode(encryptedData);
+                if (attribute instanceof Code_attribute) {
+                    Code_attribute codeAttribute = (Code_attribute) attribute;
+                    byte[] code = codeAttribute.getCode();
+                    byte[] encryptedData = rsaExample.decryptData(code);
+                    codeAttribute.setCode(encryptedData);
+                }
             }
         }
 
-        File newFile = new File(path + "fuck/world/DumbDog2.class");
+        File newFile = new File(path + "fuck/world/redefine/Dog1.class");
         ClassWriter classWriter = new ClassWriter();
         classWriter.write(classFile, newFile);
     }

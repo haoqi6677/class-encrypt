@@ -1,7 +1,7 @@
 package fuck.world.plugin.gradle
 
 import fuck.world.custom.ReCompileFile
-import fuck.world.rsa.Rsa
+import fuck.world.rsa.RsaDefaultImpl
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.FileCollection
 import org.gradle.api.tasks.Input
@@ -64,7 +64,7 @@ class ReCompileTask extends DefaultTask {
             return
         }
 
-        def reCompileFile = new ReCompileFile(new ArrayList<>(), new Rsa(pubKey, priKey))
+        def reCompileFile = new ReCompileFile(new ArrayList<>(), new RsaDefaultImpl(pubKey, priKey))
 
         FileCollection localFiles = project.tasks.compileJava.outputs.files
         if (localFiles == null) {
