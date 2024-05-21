@@ -1,4 +1,4 @@
-rootProject.name = "java-class-encrypt"
+rootProject.name = "class-encrypt"
 include("lib")
 include("agent")
 include("gradle-plugin")
