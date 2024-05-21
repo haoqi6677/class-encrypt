@@ -96,7 +96,7 @@ java
 # 用 :: 连接不同的参数
 # priKey 私钥路径
 # pkgs 加密的包，可以用,连接多个值
--javaagent:./agent-001-SNAPSHOT.jar=priKey=d:\\pri::pkgs=com.qjwy 
+-javaagent:./agent-001-SNAPSHOT.jar=priKey=d:\\pri::pkgs=fuck.world,fuck.life 
 -jar ./demo-1.0-SNAPSHOT.jar fuck.world.Main
 ```
 ### 随便说说
