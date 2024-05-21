@@ -101,5 +101,6 @@ java
 ```
 ### 随便说说
 ###### 其实只是加个壳，可以使用 arthas 运行时保存class文件
-### 注
-    不支持重写框架类企且agent参数包含框架的包名
+### <font style='color:red'>注</font>
+
+所有加载的类都会经过agent，所以在启动时传入的pkgs不能包含框架的类型   例如：org.springframework,否则可能产生 class验证失败
