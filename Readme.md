@@ -15,8 +15,8 @@ javaagent
 
 
 ### 使用方式
-#### 用自己的方式使其能作为插件被打包工具使用
-比如，将其上传到nexus服务
+1. 编译之后对class加密，之后再打成jar
+2. 用自己的方式使其能作为插件被打包工具使用;比如，将其上传到私有nexus服务
 
 #### gradle
 ```kotlin
@@ -87,6 +87,17 @@ gradle jar -x compileJava
         </plugin>
     </plugins>
 </build>
+```
+
+### 已经做成加密Jar了，如何启动
+打包agent `gradle jar` 
+```shell
+java
+# 用 :: 连接不同的参数
+# priKey 私钥路径
+# pkgs 加密的包，可以用,连接多个值
+-javaagent:./agent-001-SNAPSHOT.jar=priKey=d:\\pri::pkgs=com.qjwy 
+-jar ./demo-1.0-SNAPSHOT.jar fuck.world.Main
 ```
 ### 随便说说
 ###### 其实只是加个壳，可以使用 arthas 运行时保存class文件
