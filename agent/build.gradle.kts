@@ -1,5 +1,5 @@
 dependencies {
-    api(project(path = ":lib"))
+    implementation(project(path = ":lib"))
 }
 tasks.jar {
     manifest {
