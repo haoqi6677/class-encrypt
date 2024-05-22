@@ -2,15 +2,11 @@ package fuck.world.agent;
 
 public class AgentArg {
     private String priKey;
-    private String[] pkgs;
 
     public String getPriKey() {
         return priKey;
     }
 
-    public String[] getPkgs() {
-        return pkgs;
-    }
 
     public AgentArg(String args) {
         if (args == null || args.trim().isEmpty()) {
@@ -24,14 +20,11 @@ public class AgentArg {
                 case "priKey":
                     this.priKey = arg[1].trim();
                     break;
-                case "pkgs":
-                    this.pkgs = pkgCollec(arg[1].trim());
-                    break;
             }
         }
     }
 
-    private String[] pkgCollec(String arg) {
+    private String[] pkgArr(String arg) {
         return arg.split(",");
     }
 }

@@ -95,12 +95,8 @@ gradle jar -x compileJava
 java
 # 用 :: 连接不同的参数
 # priKey 私钥路径
-# pkgs 加密的包，可以用,连接多个值
--javaagent:./agent-001-SNAPSHOT.jar=priKey=d:\\pri::pkgs=fuck.world,fuck.life 
+-javaagent:./agent-001-SNAPSHOT.jar=priKey=d:\\pri::otherEnv=envValue 
 -jar ./demo-1.0-SNAPSHOT.jar fuck.world.Main
 ```
 ### 随便说说
 ###### 其实只是加个壳，可以使用 arthas 运行时保存class文件
-### <font style='color:red'>注</font>
-
-所有加载的类都会经过agent，所以在启动时传入的pkgs不能包含框架的类型   例如：org.springframework,否则可能产生 class验证失败

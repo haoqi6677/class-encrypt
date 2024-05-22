@@ -23,11 +23,6 @@ public class JpClassFileTransformer implements ClassFileTransformer {
                             Class<?> classBeingRedefined,
                             ProtectionDomain protectionDomain,
                             byte[] classfileBuffer) throws IllegalClassFormatException {
-        String[] pkgs = agentArg.getPkgs();
-        if (!containsAll(classNamePathSeparator(className), pkgs)) {
-            return null;
-        }
-
         try {
             ClassFile classFile = ClassFile.read(classfileBuffer);
             classFile.setRsa(rsa);
